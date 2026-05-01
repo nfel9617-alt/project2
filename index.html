@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشروع صناعة الأمل والتمكين العلمي</title>
+    <title>مشروع صناع الأمل والتمكين العلمي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         /* الألوان والهوية البصرية */
@@ -42,7 +42,7 @@
             padding: 20px;
         }
 
-        /* ---------------- شاشة البداية (Splash Screen) المحدثة ---------------- */
+        /* ---------------- شاشة البداية (Splash Screen) ---------------- */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, #002244 0%, #000c1a 100%);
@@ -60,7 +60,7 @@
         
         .splash-title { 
             color: var(--royal-gold); 
-            font-size: clamp(2rem, 5vw, 3.5rem); 
+            font-size: clamp(2.5rem, 6vw, 4rem); 
             font-weight: 800; 
             text-shadow: 0 4px 15px rgba(0,0,0,0.5); 
             opacity: 0; 
@@ -162,7 +162,7 @@
 <div id="splash-screen">
     <img src="logo.png" alt="شعار صناع الأمل" class="splash-logo" onerror="this.style.display='none'">
     
-    <h1 class="splash-title">مشروع صناعة الأمل</h1>
+    <h1 class="splash-title">صناع الأمل</h1>
     
     <p class="splash-slogan">للتمكين العلمي والتوجيه المهني</p>
     
@@ -196,7 +196,7 @@
 <div id="about-section" class="section">
     <div class="container">
         <div class="content-box">
-            <h2 class="section-title">صناعة الأمل والتمكين العلمي</h2>
+            <h2 class="section-title">صناع الأمل للتمكين العلمي</h2>
             <p style="text-align: center; margin-bottom: 40px; font-size: 1.2rem; color: #555;">
                 مشروع مجتمعي تطوعي يهدف للقضاء على الفشل الجامعي وتوجيه الشباب و القضاء على البطالة من خلال 5 ركائز:
             </p>
@@ -260,7 +260,7 @@
         <div class="content-box">
             <h2 class="section-title">استمارة الانضمام للفريق</h2>
             
-            <form id="joinForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <form id="joinForm" action="https://formspree.io/f/xykozygj" method="POST">
                 <div class="form-grid">
                     <div class="form-group"><label>الاسم واللقب</label><input type="text" name="الاسم" class="form-control" placeholder="اكتب اسمك كاملاً" required></div>
                     <div class="form-group"><label>تاريخ الميلاد</label><input type="date" name="الميلاد" class="form-control" required></div>
@@ -313,9 +313,8 @@
 </div>
 
 <script>
-    // 1. الدخول للواجهة الرئيسية بعد شاشة البداية المحدثة
+    // 1. الدخول للواجهة الرئيسية بعد شاشة البداية
     window.addEventListener('load', () => {
-        // تم زيادة الوقت إلى 3.5 ثواني ليتمكن الزائر من رؤية اللوجو، الاسم، والشعار براحة
         setTimeout(() => {
             const splash = document.getElementById('splash-screen');
             splash.style.opacity = '0';
@@ -351,7 +350,7 @@
         }, 50); 
     }
 
-    // 3. كود إرسال الفورم (Formspree)
+    // 3. كود إرسال الفورم المربوط بـ Formspree
     const form = document.getElementById("joinForm");
     form.addEventListener("submit", function(event) {
         event.preventDefault();
@@ -371,7 +370,7 @@
                 showSection('success-section'); 
                 form.reset(); 
             } else { 
-                alert("يرجى التأكد من إضافة رابط Formspree في الكود."); 
+                alert("حدث خطأ غير متوقع أثناء إرسال البيانات."); 
             }
         })
         .catch(error => alert("حدث خطأ في الاتصال بالشبكة."))
