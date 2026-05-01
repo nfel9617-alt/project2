@@ -14,7 +14,7 @@
             --bg-cream: #FDFBF6; 
             --white: #ffffff;
             --text-color: #333;
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -27,151 +27,145 @@
 
         body {
             background-color: var(--primary-blue);
+            background-image: radial-gradient(circle at center, #003366 0%, #001a33 100%);
+            background-attachment: fixed;
             color: var(--text-color);
             line-height: 1.8;
             overflow-x: hidden;
-            padding-bottom: 80px; /* مساحة لاسم المسؤول العائم */
+            padding-bottom: 80px; 
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        /* ---------------- شاشة التحميل (Splash Screen) ---------------- */
+        /* ---------------- شاشة البداية (Splash Screen) المحدثة ---------------- */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--primary-blue);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999; transition: opacity 0.6s ease-out, visibility 0.6s;
+            background: radial-gradient(circle at center, #002244 0%, #000c1a 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            z-index: 9999; transition: opacity 0.8s ease-out, visibility 0.8s;
+            padding: 20px;
         }
-        .splash-logo { width: 150px; animation: pulseGold 2s infinite alternate; filter: drop-shadow(0 0 20px rgba(192, 160, 128, 0.5)); }
-        .splash-loader { margin-top: 30px; width: 60px; height: 3px; background: rgba(255,255,255,0.1); position: relative; overflow: hidden; border-radius: 5px; }
-        .splash-loader::after { content: ''; position: absolute; top: 0; left: -60px; width: 60px; height: 100%; background: var(--royal-gold); animation: loadProgress 1.2s infinite ease-in-out; }
-        @keyframes loadProgress { 0% { left: -60px; } 100% { left: 100%; } }
-        @keyframes pulseGold { 0% { transform: scale(0.95); opacity: 0.8; } 100% { transform: scale(1.05); opacity: 1; } }
+        
+        .splash-logo { 
+            width: 160px; 
+            animation: pulseGold 2s infinite alternate; 
+            filter: drop-shadow(0 0 25px rgba(192, 160, 128, 0.4)); 
+            margin-bottom: 20px;
+        }
+        
+        .splash-title { 
+            color: var(--royal-gold); 
+            font-size: clamp(2rem, 5vw, 3.5rem); 
+            font-weight: 800; 
+            text-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+            opacity: 0; 
+            animation: fadeUp 1s ease 0.3s forwards; 
+        }
+        
+        .splash-slogan { 
+            color: var(--white); 
+            font-size: clamp(1.2rem, 3vw, 1.6rem); 
+            margin-top: 10px; 
+            font-weight: 400; 
+            opacity: 0; 
+            animation: fadeUp 1s ease 0.7s forwards; 
+        }
 
-        /* ---------------- التنقل السلس ---------------- */
-        .section { display: none; opacity: 0; transform: translateY(20px); transition: var(--transition); width: 100%; }
-        .section.active { display: block; opacity: 1; transform: translateY(0); animation: fadeIn 0.6s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .splash-loader { 
+            margin-top: 40px; width: 100px; height: 3px; background: rgba(255,255,255,0.1); 
+            position: relative; overflow: hidden; border-radius: 5px; 
+            opacity: 0; animation: fadeUp 0.5s ease 1s forwards;
+        }
+        .splash-loader::after { 
+            content: ''; position: absolute; top: 0; left: -100px; width: 100px; height: 100%; 
+            background: var(--royal-gold); animation: loadProgress 1.5s infinite ease-in-out; 
+        }
+        
+        @keyframes loadProgress { 0% { left: -100px; } 100% { left: 100%; } }
+        @keyframes pulseGold { 0% { transform: scale(0.95); opacity: 0.9; } 100% { transform: scale(1.05); opacity: 1; } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ---------------- 1. الواجهة الرئيسية (مدمجة وتظهر فوراً) ---------------- */
+        /* ---------------- التنقل الجذري (SPA Logic) ---------------- */
+        .section { 
+            display: none; 
+            opacity: 0; 
+            transform: translateY(20px); 
+            transition: opacity 0.5s ease, transform 0.5s ease; 
+            width: 100%; 
+        }
+        
+        .section.active { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+
+        /* ---------------- 1. الواجهة الرئيسية ---------------- */
         #main-section {
             min-height: 100vh;
-            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: radial-gradient(circle, rgba(0,34,68,0.95) 0%, rgba(0,34,68,1) 100%);
             padding: 20px;
         }
 
-        .hero-title {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            color: var(--white);
-            font-weight: 800;
-            margin: 20px 0 10px 0;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
+        .hero-title { font-size: clamp(2.2rem, 5vw, 4rem); color: var(--white); font-weight: 800; margin: 20px 0 10px 0; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .hero-tagline { font-size: 1.3rem; color: var(--royal-gold); margin-bottom: 50px; }
 
-        .hero-tagline {
-            font-size: 1.2rem;
-            color: var(--royal-gold);
-            margin-bottom: 40px;
-        }
+        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; width: 100%; max-width: 900px; }
 
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            width: 100%;
-            max-width: 900px;
-        }
-
-        /* كروت زجاجية احترافية تظهر للمستخدم مباشرة */
         .option-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 40px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 1px solid rgba(192, 160, 128, 0.2);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            padding: 50px 30px; border-radius: 25px; cursor: pointer; transition: var(--transition);
+            border: 1px solid rgba(192, 160, 128, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
+        .option-card:hover { transform: translateY(-8px); background: rgba(255, 255, 255, 0.1); border-color: var(--royal-gold); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .option-icon { font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(192, 160, 128, 0.3)); }
+        .option-card h3 { font-size: 2rem; color: var(--royal-gold); margin-bottom: 15px; }
+        .option-card p { color: #E0E0E0; font-size: 1.1rem; line-height: 1.6; }
 
-        .option-card:hover {
-            transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--royal-gold);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-        }
+        /* ---------------- محتوى الأقسام الداخلية ---------------- */
+        .content-box { background-color: var(--bg-cream); border-radius: 30px; padding: clamp(30px, 5vw, 60px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); margin: 40px auto; }
+        .section-title { text-align: center; font-size: 2.5rem; color: var(--primary-blue); margin-bottom: 30px; font-weight: 800; }
 
-        .option-icon { font-size: 3.5rem; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(192, 160, 128, 0.3)); }
-        .option-card h3 { font-size: 1.8rem; color: var(--royal-gold); margin-bottom: 10px; }
-        .option-card p { color: #E0E0E0; font-size: 1rem; }
-
-        /* ---------------- المحتوى الداخلي والأقسام ---------------- */
-        .content-box {
-            background-color: var(--bg-cream);
-            border-radius: 30px;
-            padding: clamp(30px, 5vw, 60px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            width: 100%;
-            max-width: 1000px;
-            margin: 40px auto;
-        }
-
-        .section-title { text-align: center; font-size: 2.5rem; color: var(--primary-blue); margin-bottom: 40px; }
+        /* ستايل الركائز الخمس */
+        .pillar-item { background: var(--white); padding: 25px; border-radius: 15px; margin-bottom: 20px; border-right: 6px solid var(--royal-gold); box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: var(--transition); }
+        .pillar-item:hover { transform: translateX(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .pillar-title { color: var(--primary-blue); font-size: 1.3rem; margin-bottom: 5px; font-weight: 700; }
 
         /* ---------------- الاستمارة ---------------- */
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--primary-blue); }
-        .form-control {
-            width: 100%; padding: 15px; border: 2px solid #E0E0E0; border-radius: 12px; font-size: 1rem;
-            transition: var(--transition); background: var(--white);
-        }
+        .form-control { width: 100%; padding: 15px; border: 2px solid #E0E0E0; border-radius: 12px; font-size: 1rem; transition: var(--transition); background: var(--white); color: var(--text-color); }
         .form-control:focus { border-color: var(--royal-gold); outline: none; box-shadow: 0 0 0 4px rgba(192, 160, 128, 0.1); }
         .full-width { grid-column: 1 / -1; }
         
         /* ---------------- الأزرار ---------------- */
         .btn-group { display: flex; gap: 15px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
-        .btn {
-            padding: 15px 40px; background: var(--royal-gold); color: var(--primary-blue); border: none;
-            border-radius: 30px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: var(--transition);
-        }
-        .btn:hover { background: var(--gold-bright); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .btn { padding: 15px 40px; background: var(--royal-gold); color: var(--primary-blue); border: none; border-radius: 30px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: var(--transition); }
+        .btn:hover { background: var(--gold-bright); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .btn-outline { background: transparent; border: 2px solid var(--primary-blue); color: var(--primary-blue); }
         .btn-outline:hover { background: var(--primary-blue); color: var(--white); }
 
         /* ---------------- بادج مسؤول المشروع ---------------- */
-        .manager-badge {
-            position: fixed; bottom: 20px; left: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            color: var(--primary-blue);
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-size: 0.95rem; font-weight: 700;
-            border: 1px solid rgba(0,0,0,0.05);
-            z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            display: flex; align-items: center; gap: 10px;
-        }
+        .manager-badge { position: fixed; bottom: 20px; left: 20px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); color: var(--primary-blue); padding: 10px 25px; border-radius: 30px; font-size: 0.95rem; font-weight: 700; border: 1px solid rgba(0,0,0,0.05); z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; }
         .manager-badge span { color: var(--royal-gold); font-weight: 800; font-size: 1.1rem; }
     </style>
 </head>
 <body>
 
 <div id="splash-screen">
-    <img src="logo.png" alt="صناع الأمل" class="splash-logo" onerror="this.style.display='none'">
-    <h2 style="color: white; margin-top: 20px; font-weight: 300;">جاري التجهيز...</h2>
+    <img src="logo.png" alt="شعار صناع الأمل" class="splash-logo" onerror="this.style.display='none'">
+    
+    <h1 class="splash-title">مشروع صناعة الأمل</h1>
+    
+    <p class="splash-slogan">للتمكين العلمي والتوجيه المهني</p>
+    
     <div class="splash-loader"></div>
 </div>
 
@@ -181,9 +175,8 @@
 </div>
 
 <div id="main-section" class="section">
-    <img src="logo.png" alt="لوجو صناع الأمل" style="width: 140px; margin-bottom: 10px;" onerror="this.style.display='none'">
     <h1 class="hero-title">منصة التمكين العلمي</h1>
-    <p class="hero-tagline">اختر وجهتك لتكون جزءاً من فريق التغيير الإيجابي</p>
+    <p class="hero-tagline">اختر وجهتك لتكون جزءاً من فريق صناع الأمل</p>
     
     <div class="options-grid">
         <div class="option-card" onclick="showSection('about-section')">
@@ -204,29 +197,38 @@
     <div class="container">
         <div class="content-box">
             <h2 class="section-title">صناعة الأمل والتمكين العلمي</h2>
-            <p style="text-align: center; margin-bottom: 40px; font-size: 1.2rem;">مشروع مجتمعي تطوعي يهدف للقضاء على الفشل الجامعي وتوجيه الشباب من خلال:</p>
+            <p style="text-align: center; margin-bottom: 40px; font-size: 1.2rem; color: #555;">
+                مشروع مجتمعي تطوعي يهدف للقضاء على الفشل الجامعي وتوجيه الشباب و القضاء على البطالة من خلال 5 ركائز:
+            </p>
             
-            <ul style="list-style: none; padding: 0;">
-                <li style="margin-bottom: 20px; padding: 20px; background: white; border-radius: 15px; border-right: 5px solid var(--royal-gold); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-                    <strong style="color: var(--primary-blue); font-size: 1.2rem;">1. منصة التوجيه الرقمية:</strong> توفر أدوات التوجيه واختبارات الميول.
-                </li>
-                <li style="margin-bottom: 20px; padding: 20px; background: white; border-radius: 15px; border-right: 5px solid var(--royal-gold); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-                    <strong style="color: var(--primary-blue); font-size: 1.2rem;">2. توجيه حاملي البكالوريا:</strong> لقاءات مع خبراء لشرح التخصصات بدقة.
-                </li>
-                <li style="margin-bottom: 20px; padding: 20px; background: white; border-radius: 15px; border-right: 5px solid var(--royal-gold); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-                    <strong style="color: var(--primary-blue); font-size: 1.2rem;">3. الورشات التكوينية:</strong> ورشات عملية مكثفة للمهارات المطلوبة في السوق.
-                </li>
-                <li style="margin-bottom: 20px; padding: 20px; background: white; border-radius: 15px; border-right: 5px solid var(--royal-gold); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-                    <strong style="color: var(--primary-blue); font-size: 1.2rem;">4. الحملات التوعوية:</strong> حملات ميدانية لنشر ثقافة العمل وبناء الثقة.
-                </li>
-                <li style="padding: 20px; background: white; border-radius: 15px; border-right: 5px solid var(--royal-gold); box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-                    <strong style="color: var(--primary-blue); font-size: 1.2rem;">5. الإدماج والتشغيل:</strong> ربط الشباب بالمؤسسات الاقتصادية.
-                </li>
-            </ul>
+            <div class="pillar-item">
+                <div class="pillar-title">1. منصة التوجيه والإدماج الرقمية</div>
+                <p>منصة حديثة توفر للشباب أدوات التوجيه المهني، واختبارات الميول، ومعلومات التخصصات الجامعية لفتح آفاق جديدة.</p>
+            </div>
+            
+            <div class="pillar-item">
+                <div class="pillar-title">2. برنامج توجيه حاملي شهادة البكالوريا</div>
+                <p>لقاءات وأيام توجيه بمشاركة أساتذة جامعيين وخبراء لشرح التخصصات الجامعية بدقة وضمان انطلاقة ناجحة.</p>
+            </div>
+            
+            <div class="pillar-item">
+                <div class="pillar-title">3. الورشات التكوينية القصيرة</div>
+                <p>ورشات عملية مكثفة مدتها من ثلاث أيام إلى أسبوع تركز على المهارات الأكثر طلباً في سوق العمل.</p>
+            </div>
+            
+            <div class="pillar-item">
+                <div class="pillar-title">4. الحملات التوعوية</div>
+                <p>حملات ميدانية في المدارس ودور الشباب لنشر ثقافة التوجيه، والعمل، وبناء الثقة لدى الشباب.</p>
+            </div>
+            
+            <div class="pillar-item">
+                <div class="pillar-title">5. برنامج الإدماج والتشغيل</div>
+                <p>ربط الشباب بالمؤسسات الاقتصادية وتنظيم أيام توظيف لتحويل التكوين إلى فرص عمل حقيقية ومستدامة.</p>
+            </div>
             
             <div class="btn-group">
                 <button class="btn btn-outline" onclick="showSection('main-section')">العودة للرئيسية</button>
-                <button class="btn" onclick="showSection('terms-section')">الانتقال للتسجيل</button>
+                <button class="btn" onclick="showSection('terms-section')">الانتقال لطلب الانضمام</button>
             </div>
         </div>
     </div>
@@ -236,18 +238,18 @@
     <div class="container">
         <div class="content-box" style="text-align: center;">
             <h2 class="section-title">ميثاق الانضمام للفريق</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 30px;">نبحث عن التميز والالتزام في كل عضو ينضم إلينا.</p>
+            <p style="font-size: 1.2rem; margin-bottom: 30px; color: #555;">نبحث عن التميز والالتزام في كل عضو ينضم إلينا.</p>
             
-            <div style="background: white; padding: 30px; border-radius: 15px; text-align: right; display: inline-block; max-width: 600px; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-                <p style="margin-bottom: 15px; font-size: 1.2rem;">✦ الجدية والالتزام بالمهام والمواعيد.</p>
-                <p style="margin-bottom: 15px; font-size: 1.2rem;">✦ الاحترام المتبادل وروح الفريق الواحد.</p>
-                <p style="margin-bottom: 15px; font-size: 1.2rem;">✦ التحلي بروح العمل الجماعي والمبادرة.</p>
-                <p style="font-size: 1.2rem;">✦ الرغبة المستمرة في التعلم والتطوير.</p>
+            <div style="background: rgba(0,34,68,0.03); padding: 30px; border-radius: 15px; text-align: right; display: inline-block; max-width: 600px; width: 100%; border: 1px solid #eee;">
+                <p style="margin-bottom: 15px; font-size: 1.2rem; color: var(--primary-blue);"><strong>✦</strong> الجدية والالتزام بالمهام والمواعيد.</p>
+                <p style="margin-bottom: 15px; font-size: 1.2rem; color: var(--primary-blue);"><strong>✦</strong> الاحترام المتبادل وروح الفريق الواحد.</p>
+                <p style="margin-bottom: 15px; font-size: 1.2rem; color: var(--primary-blue);"><strong>✦</strong> التحلي بروح العمل الجماعي والمبادرة.</p>
+                <p style="font-size: 1.2rem; color: var(--primary-blue);"><strong>✦</strong> الرغبة المستمرة في التعلم والتطوير.</p>
             </div>
 
             <div class="btn-group">
-                <button class="btn btn-outline" onclick="showSection('main-section')">تراجع</button>
-                <button class="btn" onclick="showSection('registration-section')">أوافق على الشروط</button>
+                <button class="btn btn-outline" onclick="showSection('main-section')">العودة للرئيسية</button>
+                <button class="btn" onclick="showSection('registration-section')">أوافق على الشروط (استمرار)</button>
             </div>
         </div>
     </div>
@@ -256,39 +258,42 @@
 <div id="registration-section" class="section">
     <div class="container">
         <div class="content-box">
-            <h2 class="section-title">استمارة الانضمام</h2>
+            <h2 class="section-title">استمارة الانضمام للفريق</h2>
             
             <form id="joinForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
                 <div class="form-grid">
-                    <div class="form-group"><label>الاسم واللقب</label><input type="text" name="الاسم" class="form-control" required></div>
+                    <div class="form-group"><label>الاسم واللقب</label><input type="text" name="الاسم" class="form-control" placeholder="اكتب اسمك كاملاً" required></div>
                     <div class="form-group"><label>تاريخ الميلاد</label><input type="date" name="الميلاد" class="form-control" required></div>
-                    <div class="form-group"><label>رقم الهاتف</label><input type="tel" name="الهاتف" class="form-control" required dir="ltr" style="text-align: right;"></div>
-                    <div class="form-group"><label>البريد الإلكتروني</label><input type="email" name="الايميل" class="form-control" required dir="ltr" style="text-align: right;"></div>
-                    <div class="form-group"><label>الولاية / البلدية</label><input type="text" name="الولاية" class="form-control" required></div>
-                    <div class="form-group"><label>المستوى الدراسي</label><input type="text" name="المستوى" class="form-control" required></div>
+                    <div class="form-group"><label>رقم الهاتف</label><input type="tel" name="الهاتف" class="form-control" placeholder="0555555555" required dir="ltr" style="text-align: right;"></div>
+                    <div class="form-group"><label>البريد الإلكتروني</label><input type="email" name="الايميل" class="form-control" placeholder="email@example.com" required dir="ltr" style="text-align: right;"></div>
+                    <div class="form-group"><label>الولاية / البلدية</label><input type="text" name="الولاية" class="form-control" placeholder="مثال: وهران - السانية" required></div>
+                    <div class="form-group"><label>المستوى الدراسي</label><input type="text" name="المستوى" class="form-control" placeholder="مثال: جامعي، ثانوي..." required></div>
 
                     <div class="form-group full-width">
-                        <label>اللجنة المطلوبة</label>
+                        <label>اللجنة المطلوبة للانضمام</label>
                         <select name="اللجنة" class="form-control" required>
-                            <option value="" disabled selected>اختر اللجنة...</option>
-                            <option>التخطيط والتطوير</option><option>التواصل مع الشركاء</option>
-                            <option>الإعلام</option><option>الموارد واللوجيستيك</option>
-                            <option>تنظيم الحملات</option><option>المتابعة وقياس الأثر</option>
+                            <option value="" disabled selected>اختر اللجنة المناسبة لشغفك...</option>
+                            <option>لجنة التخطيط والتطوير</option>
+                            <option>لجنة التواصل مع الشركاء</option>
+                            <option>لجنة الإعلام</option>
+                            <option>لجنة الموارد واللوجيستيك</option>
+                            <option>لجنة تنظيم الحملات</option>
+                            <option>لجنة المتابعة وقياس الأثر</option>
                         </select>
                     </div>
                     
-                    <div class="form-group full-width"><label>لماذا تريد الانضمام؟</label><textarea name="السبب" class="form-control" rows="4" required></textarea></div>
-                    <div class="form-group full-width"><label>المهارات (اختياري)</label><textarea name="المهارات" class="form-control" rows="2"></textarea></div>
+                    <div class="form-group full-width"><label>لماذا تريد الانضمام إلينا؟</label><textarea name="السبب" class="form-control" rows="4" placeholder="اكتب فقرة قصيرة تعبر عن دافعك" required></textarea></div>
+                    <div class="form-group full-width"><label>المهارات (اختياري)</label><textarea name="المهارات" class="form-control" rows="2" placeholder="تصميم، مونتاج، كتابة، تواصل..."></textarea></div>
 
                     <div class="form-group">
-                        <label>تجربة سابقة في التطوع؟</label>
-                        <select name="خبرة" class="form-control" required><option>نعم</option><option>لا</option></select>
+                        <label>هل لديك تجربة سابقة في التطوع؟</label>
+                        <select name="خبرة" class="form-control" required><option value="" disabled selected>اختر...</option><option>نعم</option><option>لا</option></select>
                     </div>
-                    <div class="form-group"><label>ساعات الالتزام أسبوعياً</label><input type="number" name="الساعات" class="form-control" min="1" required></div>
+                    <div class="form-group"><label>ساعات الالتزام أسبوعياً</label><input type="number" name="الساعات" class="form-control" min="1" placeholder="عدد الساعات" required></div>
                 </div>
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-outline" onclick="showSection('terms-section')">رجوع</button>
+                    <button type="button" class="btn btn-outline" onclick="showSection('terms-section')">رجوع للشروط</button>
                     <button type="submit" id="submitBtn" class="btn">تأكيد وإرسال الطلب</button>
                 </div>
             </form>
@@ -300,33 +305,53 @@
     <div class="container">
         <div class="content-box" style="text-align: center; padding: 80px 20px;">
             <div style="font-size: 5rem; color: #2E7D32; margin-bottom: 20px;">✅</div>
-            <h2 class="section-title">تم استلام طلبك بنجاح!</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 40px;">سيتم مراجعة طلبك والتواصل معك في أقرب وقت.</p>
+            <h2 class="section-title" style="margin-bottom: 10px;">تم استلام طلبك بنجاح!</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 40px; color: #555;">شكراً لثقتك. سيقوم فريقنا بمراجعة طلبك والتواصل معك في أقرب وقت.</p>
             <button class="btn" onclick="showSection('main-section')">العودة للرئيسية</button>
         </div>
     </div>
 </div>
 
 <script>
-    // 1. إظهار الواجهة الرئيسية فوراً بعد شاشة التحميل
+    // 1. الدخول للواجهة الرئيسية بعد شاشة البداية المحدثة
     window.addEventListener('load', () => {
+        // تم زيادة الوقت إلى 3.5 ثواني ليتمكن الزائر من رؤية اللوجو، الاسم، والشعار براحة
         setTimeout(() => {
             const splash = document.getElementById('splash-screen');
             splash.style.opacity = '0';
             splash.style.visibility = 'hidden';
-            setTimeout(() => { showSection('main-section'); }, 500);
-        }, 1800); // قللنا مدة شاشة التحميل قليلاً لتسريع الدخول
+            
+            setTimeout(() => {
+                const mainSec = document.getElementById('main-section');
+                mainSec.style.display = 'flex'; 
+                setTimeout(() => mainSec.classList.add('active'), 50);
+            }, 800);
+        }, 3500);
     });
 
-    // 2. التنقل السلس بين الأقسام
+    // 2. دالة التنقل
     function showSection(sectionId) {
-        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(sec => {
+            sec.classList.remove('active');
+            sec.style.display = 'none'; 
+        });
+
+        window.scrollTo(0, 0);
+
         const target = document.getElementById(sectionId);
-        target.classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        if (sectionId === 'main-section') {
+            target.style.display = 'flex';
+        } else {
+            target.style.display = 'block';
+        }
+        
+        setTimeout(() => {
+            target.classList.add('active');
+        }, 50); 
     }
 
-    // 3. إرسال البيانات
+    // 3. كود إرسال الفورم (Formspree)
     const form = document.getElementById("joinForm");
     form.addEventListener("submit", function(event) {
         event.preventDefault();
@@ -336,13 +361,24 @@
         status.innerHTML = "جاري الإرسال... ⏳";
         status.disabled = true;
 
-        fetch(event.target.action, { method: form.method, body: formData, headers: { 'Accept': 'application/json' } })
-        .then(response => {
-            if (response.ok) { showSection('success-section'); form.reset(); }
-            else { alert("يرجى التأكد من إضافة رابط Formspree في الكود."); }
+        fetch(event.target.action, { 
+            method: form.method, 
+            body: formData, 
+            headers: { 'Accept': 'application/json' } 
         })
-        .catch(error => alert("حدث خطأ في الاتصال."))
-        .finally(() => { status.innerHTML = "تأكيد وإرسال الطلب"; status.disabled = false; });
+        .then(response => {
+            if (response.ok) { 
+                showSection('success-section'); 
+                form.reset(); 
+            } else { 
+                alert("يرجى التأكد من إضافة رابط Formspree في الكود."); 
+            }
+        })
+        .catch(error => alert("حدث خطأ في الاتصال بالشبكة."))
+        .finally(() => { 
+            status.innerHTML = "تأكيد وإرسال الطلب"; 
+            status.disabled = false; 
+        });
     });
 </script>
 
